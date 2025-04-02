@@ -21,6 +21,8 @@ var defaultUsedWoodEnvs = []string{
 	"CI_PREV_COMMIT_URL",
 	"CI_PIPELINE_FORGE_URL",
 	"CI_PIPELINE_URL",
+	"CI_PIPELINE_STATUS",
+	"DRONE_BUILD_STATUS",
 }
 
 type Settings struct {
@@ -55,7 +57,6 @@ func GetSettings() (*Settings, error) {
 					switch fv.Type().Elem().Kind() {
 					case reflect.Ptr:
 						// []*WebhookProvider
-						fmt.Println("slice", envVarName)
 						var webhooks []*WebhookProvider
 						err := json.Unmarshal([]byte(envVarValue), &webhooks)
 						if err != nil {
@@ -123,4 +124,13 @@ func printBuildInfo(bindData map[string]string) {
 	fmt.Printf(" VERSION: %s\n", bindData["BUILD_TAG"])
 	fmt.Printf(" STATUS:  %s\n", bindData["CI_PREV_PIPELINE_STATUS"])
 	fmt.Printf(" DATE:    %s\n", time.Now().UTC().Format(time.RFC3339))
+
+	fmt.Println("")
+	fmt.Printf(" STATUS:  %s\n", bindData["CI_PIPELINE_STATUS"])
+	fmt.Printf(" STATUS:  %s\n", bindData["DRONE_BUILD_STATUS"])
+
+	envs := os.Environ()
+	for _, e := range envs {
+		fmt.Println(e)
+	}
 }
