@@ -56,7 +56,7 @@ func (teams *teams) createTeamsCard() map[string]any {
 
 func (teams *teams) createCardBody() []map[string]any {
 	projectVersion := teams.setting.GetVersion()
-	status := teams.setting.GetPreBuildStatus()
+	status := teams.setting.GetBuildStatus()
 	color := "good"
 	title := "✔ Pipeline succeeded"
 	if status == "failure" {

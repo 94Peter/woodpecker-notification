@@ -44,8 +44,8 @@ func (teams *TeamsSettings) GetVersion() string {
 	return teams.bindData["BUILD_TAG"]
 }
 
-func (teams *TeamsSettings) GetPreBuildStatus() string {
-	return teams.bindData["CI_PREV_PIPELINE_STATUS"]
+func (teams *TeamsSettings) GetBuildStatus() string {
+	return teams.bindData["DRONE_BUILD_STATUS"]
 }
 
 func (teams *TeamsSettings) GetAuthorAvatar() string {

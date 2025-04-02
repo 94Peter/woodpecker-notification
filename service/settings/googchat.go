@@ -66,7 +66,7 @@ func (google *GoogleChatSettings) getBindData() map[string]string {
 	bindData["VIEW_RELEASE_ICON_URL"] = releaseIcon
 	bindData["VIEW_PIPLELINE_ICON_URL"] = pipelineIcon
 	statusIcon := successIcon
-	if bindData["CI_PREV_PIPELINE_STATUS"] == "failure" {
+	if bindData["DRONE_BUILD_STATUS"] == "failure" {
 		statusIcon = failIcon
 	}
 	bindData["STATUS_ICON_URL"] = statusIcon

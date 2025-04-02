@@ -122,12 +122,8 @@ func printBuildInfo(bindData map[string]string) {
 	fmt.Println("\nBuild Info:")
 	fmt.Printf(" PROJECT: %s\n", bindData["CI_REPO"])
 	fmt.Printf(" VERSION: %s\n", bindData["BUILD_TAG"])
-	fmt.Printf(" STATUS:  %s\n", bindData["CI_PREV_PIPELINE_STATUS"])
-	fmt.Printf(" DATE:    %s\n", time.Now().UTC().Format(time.RFC3339))
-
-	fmt.Println("")
-	fmt.Printf(" STATUS:  %s\n", bindData["CI_PIPELINE_STATUS"])
 	fmt.Printf(" STATUS:  %s\n", bindData["DRONE_BUILD_STATUS"])
+	fmt.Printf(" DATE:    %s\n", time.Now().UTC().Format(time.RFC3339))
 
 	envs := os.Environ()
 	for _, e := range envs {
