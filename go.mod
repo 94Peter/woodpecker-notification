@@ -1,3 +1,3 @@
-module ci-teams-notification
+module woodpecker-webhook
 
-go 1.23.4
+go 1.23.3
