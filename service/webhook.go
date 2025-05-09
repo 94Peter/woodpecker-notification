@@ -31,6 +31,12 @@ func GetSendMessageFunSlice() ([]SendMessage, error) {
 				return nil, err
 			}
 			result[i] = newTeamsSendMessage(teamSettings)
+		case settings.Provider_portainer:
+			portainerSettings, err := settings.NewPortainerSettings(hook)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = newPortainerSendMessage(portainerSettings)
 		default:
 			return nil, errors.New("Webhooks containe not support provider")
 		}
@@ -45,7 +51,7 @@ func postWebhook(url string, data io.Reader) error {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
 		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("Error status code [%d] response from webhook: %s", resp.StatusCode, string(body))
 	}
