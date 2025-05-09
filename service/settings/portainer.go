@@ -25,28 +25,26 @@ func NewPortainerSettings(provider *WebhookProvider) (*PortainerSettings, error)
 }
 
 type PortainerSettings struct {
-	TagKey    string `json:"tagkey"`
-	TagValue  string `json:"tagvalue"`
-	PullImage bool   `json:"pullimage"`
+	TagKey    *string `json:"tagkey,omitempty"`
+	TagValue  *string `json:"tagvalue,omitempty"`
+	PullImage *bool   `json:"pullimage,omitempty"`
 
 	webhook  string
 	bindData map[string]string
 }
 
 func (portainer *PortainerSettings) GetWebhookURL() string {
-	// url paramter generate
 	myurl, err := url.Parse(portainer.webhook)
 	if err != nil {
-		fmt.Println("parse url error: ", err)
 		return portainer.webhook
 	}
 	values := url.Values{}
-	if portainer.TagKey != "" && portainer.TagValue != "" {
-		values.Add(portainer.TagKey, portainer.TagValue)
+	if portainer.TagKey != nil && portainer.TagValue != nil {
+		values.Add(*portainer.TagKey, *portainer.TagValue)
 	}
-	values.Add("pullimage", fmt.Sprintf("%t", portainer.PullImage))
+	if portainer.PullImage != nil {
+		values.Add("pullimage", fmt.Sprintf("%t", *portainer.PullImage))
+	}
 	myurl.RawQuery = values.Encode()
-	url := myurl.String()
-	fmt.Println(url)
-	return url
+	return myurl.String()
 }

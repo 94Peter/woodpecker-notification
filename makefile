@@ -4,7 +4,7 @@ local-build:
 
 
 run: 
-	export PLUGIN_WEBHOOKS='[{"webhook":"https://chat.googleapis.com/v1/spaces/AAAAgTnjGho/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aXpTnIFH3w64wVPm8FOm5gfxoHPoBmevOeXpcIC1VJ0","provider":"google_chat","configs":{}},{"webhook":"https://portainer.arwork.tw/api/stacks/webhooks/fad816cf-01bd-461a-b672-ee909c400c46","provider":"portainer","configs":{"tagkey":"TAG","tagvalue":"dev","pullimage": true}}]' && \
+	export PLUGIN_WEBHOOKS='[{"webhook":"https://chat.googleapis.com/v1/spaces/AAAAgTnjGho/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aXpTnIFH3w64wVPm8FOm5gfxoHPoBmevOeXpcIC1VJ0","provider":"google_chat","configs":{}},{"webhook":"https://portainer.arwork.tw/api/stacks/webhooks/fad816cf-01bd-461a-b672-ee909c400c46","provider":"portainer","configs":{}}]' && \
 	export PLUGIN_DEBUG=true && \
 	export CI_COMMIT_SHA=1234567890 && \
 	export CI_REPO=1234567890 && \
