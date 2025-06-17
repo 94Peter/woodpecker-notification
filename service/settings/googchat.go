@@ -36,8 +36,13 @@ func NewGoogleChatSettings(provider *WebhookProvider) (*GoogleChatSettings, erro
 	} else {
 		result.Message = defaultGoogleChatMsg
 	}
-	fmt.Println("google setting: ", result.MsgFile)
-	tpl, err := template.New("googleMsg").Parse(result.Message)
+	var tpl *template.Template
+	var err error
+	if result.MsgFile != "" {
+		tpl, err = template.New("googleMsg").Parse(`{"text": "{{.msg}}"}`)
+	} else {
+		tpl, err = template.New("googleMsg").Parse(result.Message)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -77,17 +82,20 @@ func (google *GoogleChatSettings) getBindData() map[string]string {
 }
 
 func (google *GoogleChatSettings) GetMsgReader() (io.Reader, error) {
+	var bindData map[string]string
 	if google.MsgFile != "" {
-
 		file, err := os.ReadFile(google.MsgFile)
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("google msg file: ", string(file))
-		return bytes.NewReader(file), nil
+		bindData = map[string]string{
+			"msg": string(file),
+		}
+	} else {
+		bindData = google.getBindData()
 	}
 	var data bytes.Buffer
-	err := google.msgTpl.Execute(&data, google.getBindData())
+	err := google.msgTpl.Execute(&data, bindData)
 	if err != nil {
 		return nil, err
 	}
