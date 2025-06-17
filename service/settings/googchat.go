@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 
 	"html/template"
 )
@@ -46,6 +47,7 @@ func NewGoogleChatSettings(provider *WebhookProvider) (*GoogleChatSettings, erro
 
 type GoogleChatSettings struct {
 	Message string `json:"message"`
+	MsgFile string `json:"msg_file"`
 
 	webhook  string
 	msgTpl   *template.Template
@@ -75,6 +77,12 @@ func (google *GoogleChatSettings) getBindData() map[string]string {
 }
 
 func (google *GoogleChatSettings) GetMsgReader() (io.Reader, error) {
+	if google.Message != "" {
+		return bytes.NewReader([]byte(google.Message)), nil
+	}
+	if google.MsgFile != "" {
+		return os.Open(google.MsgFile)
+	}
 	var data bytes.Buffer
 	err := google.msgTpl.Execute(&data, google.getBindData())
 	if err != nil {
