@@ -36,7 +36,7 @@ func NewGoogleChatSettings(provider *WebhookProvider) (*GoogleChatSettings, erro
 	} else {
 		result.Message = defaultGoogleChatMsg
 	}
-
+	fmt.Println("google setting: ", result.MsgFile)
 	tpl, err := template.New("googleMsg").Parse(result.Message)
 	if err != nil {
 		return nil, err
@@ -77,11 +77,14 @@ func (google *GoogleChatSettings) getBindData() map[string]string {
 }
 
 func (google *GoogleChatSettings) GetMsgReader() (io.Reader, error) {
-	if google.Message != "" {
-		return bytes.NewReader([]byte(google.Message)), nil
-	}
 	if google.MsgFile != "" {
-		return os.Open(google.MsgFile)
+
+		file, err := os.ReadFile(google.MsgFile)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println("google msg file: ", string(file))
+		return bytes.NewReader(file), nil
 	}
 	var data bytes.Buffer
 	err := google.msgTpl.Execute(&data, google.getBindData())
